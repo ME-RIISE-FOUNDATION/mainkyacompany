@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "Attendance_ID": "ATT_20260818_5O51UU",
+        "Employee_ID": "EMP_001",
+        "Date": "2026-08-18",
+        "Login_Time": "2026-08-18 11:30:38",
+        "Check_In": "",
+        "Check_Out": ""
+    },
+    {
+        "Attendance_ID": "ATT_20260818_RX5V9X",
+        "Employee_ID": "EMP_006",
+        "Date": "2026-08-18",
+        "Login_Time": "2026-08-18 12:10:40",
+        "Check_In": "",
+        "Check_Out": ""
+    }
+]

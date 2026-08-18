@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Populate designation select
   const desigSel = document.getElementById('newDesig');
-  DESIGNATIONS.filter(d => d !== 'CEO').forEach(d => { const o=document.createElement('option'); o.value=o.textContent=d; desigSel.appendChild(o); });
+  DESIGNATIONS.filter(d => !ADMIN_ROLES.includes(d)).forEach(d => { const o=document.createElement('option'); o.value=o.textContent=d; desigSel.appendChild(o); });
 
   const empCards = employees.map(emp => {
     const stats   = Utils.employeeStats(tasks, emp.Employee_ID);
@@ -210,7 +210,7 @@ function openProfile(empId) {
   const tasks = DB.findMany('tasks', 'Employee_ID', empId);
   const stats = Utils.employeeStats(tasks, empId);
   const ini   = Utils.initials(emp.Name);
-  const desigOpts = DESIGNATIONS.filter(d => d !== 'CEO')
+  const desigOpts = DESIGNATIONS.filter(d => !ADMIN_ROLES.includes(d))
     .map(d => `<option value="${Utils.esc(d)}" ${emp.Designation===d?'selected':''}>${Utils.esc(d)}</option>`).join('');
 
   document.getElementById('empProfileBody').innerHTML = `

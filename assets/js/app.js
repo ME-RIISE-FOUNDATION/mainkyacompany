@@ -34,10 +34,10 @@ if (document.getElementById('pageContent')) showBootLoader();
 // ── Config ────────────────────────────────────────────────────
 // Only the CEO role has admin access. Every other role (COO included) is a task
 // recipient like any staff member — they receive tasks but not the admin panel.
-const ADMIN_ROLES   = ['CEO'];
+const ADMIN_ROLES   = ['CEO & Managing Director'];
 const TASK_STATUSES = ['Pending', 'In Progress', 'Completed', 'Approved', 'Rejected'];
 const PRIORITIES    = ['High', 'Medium', 'Low'];
-const DESIGNATIONS  = ['CEO', 'Operation and Business Head', 'Software Developer', 'Full Stack Developer', 'Software Engineer', 'Visual Editor & Cameraman', 'News Junction Operator'];
+const DESIGNATIONS  = ['CEO & Managing Director', 'Operation and Business Head', 'Software Developer', 'Full Stack Developer', 'Software Engineer', 'Visual Editor & Cameraman', 'News Junction Operator'];
 
 // ── Server sync ───────────────────────────────────────────────
 // Served over http(s) => a PHP backend is present and is the shared source of
@@ -494,20 +494,30 @@ const Utils = {
   },
   pctColor(pct) { return pct >= 70 ? 'success' : pct >= 40 ? 'warning' : 'danger'; },
   desigIcon(d) {
-    return {'CEO':'bi-person-badge-fill','COO':'bi-person-workspace','TBI Manager':'bi-briefcase-fill','Software Associate':'bi-code-slash',
-            'Finance Associate':'bi-currency-rupee','Innovation Associate':'bi-lightbulb'}[d] || 'bi-person';
+    return {'CEO & Managing Director':'bi-person-badge-fill','Operation and Business Head':'bi-briefcase-fill','Software Developer':'bi-code-slash',
+            'Full Stack Developer':'bi-layers','Software Engineer':'bi-cpu','Visual Editor & Cameraman':'bi-camera-video','News Junction Operator':'bi-broadcast'}[d] || 'bi-person';
   },
   // "On Leave" pill for an employee record (empty string when active)
   leaveBadge(emp) {
     return emp && emp.Status === 'On Leave'
       ? '<span class="badge bg-warning text-dark"><i class="bi bi-umbrella me-1"></i>On Leave</span>' : '';
   },
+  // Resolve a stored File_URL to a usable link. Full URLs and site-absolute
+  // paths pass through unchanged; our own "uploads/…" paths are made relative
+  // to the app root (so they work from /employee/ and /admin/ pages alike);
+  // anything else (a free-text reference an admin typed) is returned as-is.
+  fileUrl(u) {
+    if (!u) return '';
+    if (/^https?:\/\//i.test(u) || u.startsWith('/')) return u;
+    if (u.startsWith('uploads/')) return rootPath() + u;
+    return u;
+  },
 };
 
 // The CEO is the head of the organisation and the admin — not listed alongside
 // staff in employee views, rankings or analytics.
 function staffOnly(employees) {
-  return (employees || []).filter(e => e.Designation !== 'CEO');
+  return (employees || []).filter(e => !ADMIN_ROLES.includes(e.Designation));
 }
 
 // ── Root path ─────────────────────────────────────────────────
@@ -935,6 +945,20 @@ function setTheme(theme) {
 
 // ── URL params helper ─────────────────────────────────────────
 function getParams() { return new URLSearchParams(window.location.search); }
+
+// ── File upload ───────────────────────────────────────────────
+// Sends one file to api/upload.php and resolves to the stored app-root-relative
+// URL (e.g. "uploads/20260818_..._ab12cd34.pdf"). Throws on any failure so the
+// caller can surface the message. Used for task attachments / proof of work.
+async function uploadFile(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  const res  = await fetch(rootPath() + 'api/upload.php', { method: 'POST', body: fd });
+  let data;
+  try { data = await res.json(); } catch { throw new Error('Upload failed (bad server response)'); }
+  if (!res.ok || !data.ok) throw new Error(data && data.error ? data.error : 'Upload failed');
+  return data.url;
+}
 
 // ── Runtime branding ──────────────────────────────────────────
 // Applies COMPANY_NAME everywhere the markup is static: the browser-tab title

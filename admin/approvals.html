@@ -62,7 +62,7 @@ function renderPage() {
               <span><i class="bi bi-calendar me-1"></i>Deadline: ${Utils.formatDate(task.Deadline)}</span>
               <span><i class="bi bi-clock me-1"></i>Submitted: ${Utils.formatDate(appr.Submission_Date)}</span>
             </div>
-            ${task.File_URL ? `<div class="mb-3"><a href="${Utils.esc(task.File_URL)}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="bi bi-paperclip me-1"></i>View Attachment</a></div>` : ''}
+            ${task.File_URL ? `<div class="mb-3"><a href="${Utils.esc(Utils.fileUrl(task.File_URL))}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="bi bi-paperclip me-1"></i>View Attachment</a></div>` : ''}
             <div class="mb-2">
               <textarea class="form-control form-control-sm" id="comments_${appr.Approval_ID}" rows="2" placeholder="Review comments (optional)…"></textarea>
             </div>
