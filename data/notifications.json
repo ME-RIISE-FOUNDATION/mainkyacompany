@@ -1,0 +1,506 @@
+[
+  {
+    "Notif_ID": "NOTIF_20260708_X479BG",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: Get the permission letter for alumni Hall by 10:00 am for 10th event",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:10:52"
+  },
+  {
+    "Notif_ID": "NOTIF_20260708_I4KHPO",
+    "User_ID": "EMP_003",
+    "Message": "New task assigned: In Task manager show me the option to change password",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:11:36"
+  },
+  {
+    "Notif_ID": "NOTIF_20260708_XNY0EJ",
+    "User_ID": "EMP_003",
+    "Message": "New task assigned: Talk to Gokul and set up a meeting with the volunteers today - Need to work on Arogyamanthan registrations",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:12:44"
+  },
+  {
+    "Notif_ID": "NOTIF_20260708_G6N9MK",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: Discuss and float the problem statements for Arogyamanthan",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:13:29"
+  },
+  {
+    "Notif_ID": "NOTIF_20260708_QDSU32",
+    "User_ID": "EMP_003",
+    "Message": "New task assigned: Discuss and float the problem statements for Arogyamanthan",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:13:29"
+  },
+  {
+    "Notif_ID": "NOTIF_20260708_V5E7F4",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: Update RGEP UC as per this months stipend disbursement",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:15:01"
+  },
+  {
+    "Notif_ID": "NOTIF_20260708_S4NBA8",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Marketing decoded",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:18:00"
+  },
+  {
+    "Notif_ID": "NOTIF_20260708_E67MGY",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: Plan for the Tally event",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-08 03:19:29"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_URJ52G",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Morning Session  - script",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-13 01:43:09"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_TG8RVV",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Afternoon Task",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-13 01:44:58"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_STMN28",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Complete Marketing decoded and AI nexus filing and share in drive",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-13 02:13:47"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_9BZQJ2",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Redraft the event plan as per my suggestions in mail and send it by 4 pm",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-13 02:14:32"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_GEM1WH",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Redraft the event plan as per my suggestions in mail and send it by 4 pm",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-13 02:14:32"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_N6BNYA",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Share the drive link of all events of June and July till date to ceomeriise@mcehassan.ac.in",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-13 02:22:31"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_O3M1DP",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Complete the filing of DSA course of session 4",
+    "Type": "task_assigned",
+    "Read_Status": "read",
+    "Created_At": "2026-07-13 02:23:00"
+  },
+  {
+    "Notif_ID": "NOTIF_20260713_BFNBJN",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Update excel sheet of NAIN events and MRF events",
+    "Type": "task_assigned",
+    "Read_Status": "read",
+    "Created_At": "2026-07-13 02:28:15"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_001ZV3",
+    "User_ID": "EMP_003",
+    "Message": "New task assigned: Website maintenance - Check the google form and update the status",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:23:33"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_4V7FT6",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Discuss the preparation for outreach with me. Update the tracker and plan for the visit to schools",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:24:42"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_S62KTL",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: Tally - ppt",
+    "Type": "task_assigned",
+    "Read_Status": "read",
+    "Created_At": "2026-07-14 02:26:32"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_LZZJ3A",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: Complete the plan for communication workshop.",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:27:27"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_YCBOYK",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Get the excel sheet of events from Madhurya",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:31:25"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_VBTJD0",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: Send IIC events of Q1, Q2 and Q3 to Deeksha - Tell her to print and file it by EoD",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:32:09"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_94X7JD",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Collect IIC activities from Mona and print it and file it",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:32:40"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_ATO86Y",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: RGEP - PMP fee - Talk to Mona and get the information",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:34:26"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_XVC9WD",
+    "User_ID": "EMP_003",
+    "Message": "New task assigned: In meriise.org homepage - the tabs are overlapping - rectify it",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:35:45"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_WV1E7W",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Ge the scanned copy of Megha H M's appointment order, reporting letter and mail it to ceomeriise@mcehassan.ac.in also add all details in drive.",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:38:12"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_HAP3X5",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: Submit the book chapter",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 02:41:46"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_RLW9BC",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Add craftronics visit and T-Hub visit in ME-RIISE foundation website",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 03:53:22"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_HBSF34",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: File the reports of Craftronics and T-Hub visit - Take it from madhurya -",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 03:54:07"
+  },
+  {
+    "Notif_ID": "NOTIF_20260714_VON9DE",
+    "User_ID": "EMP_003",
+    "Message": "New task assigned: testing",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-14 07:54:15"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_NIMBFT",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: Complete the C CAMP workshop exercise",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 02:51:15"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_6OA1RX",
+    "User_ID": "EMP_008",
+    "Message": "New task assigned: Discuss the Quarterly plan at 10:30 am",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 02:51:40"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_3ED4PE",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Update me on the visit to schools and the planned visits",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 02:52:54"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_UZKU04",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Discuss the event plan with Mona and submit the updated one",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 02:55:53"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_BB4AII",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Show the fisrt draft of newsletter to Mona by 10:30 am",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 02:56:35"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_CIHIIV",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Arogyamanthan - Start updating the file",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 03:01:55"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_YZ8NKR",
+    "User_ID": "EMP_006",
+    "Message": "Your task has been Approved: Cal all NAIN 2.0 teams and confirm if they have registered for the event if not tell them to register immediately",
+    "Type": "approval_result",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 11:04:54"
+  },
+  {
+    "Notif_ID": "NOTIF_20260715_SIKWAV",
+    "User_ID": "EMP_006",
+    "Message": "Your task has been Approved: Marketing decoded",
+    "Type": "approval_result",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-15 11:05:01"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_RY8IJW",
+    "User_ID": "EMP_008",
+    "Message": "New task assigned: Visit Schools and Colleges",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:25:34"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_AREKHI",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Visit Schools and Colleges",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:25:34"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_LXW9QW",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: Share the TBI UC in TBI drive tracker and share the link only - all updates to be done in the sheet",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:28:38"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_UZF76Y",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: Teach tally to a group of students",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:35:49"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_YITHT4",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Stapley and Megha will be doing outreach activities",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:38:51"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_S6XYXC",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Send the updated IIC folder by 12 pm",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:42:42"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_KNP6UF",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Check the 2024-25 event list of IIC - it has to be updated in website",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:43:45"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_QGHKD8",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Check the 2024-25 event list of IIC - it has to be updated in website",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:43:45"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_NVI5JG",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: Check the 2024-25 event list of IIC - it has to be updated in website",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:43:47"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_ABN5ZP",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: Check the 2024-25 event list of IIC - it has to be updated in website",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:43:47"
+  },
+  {
+    "Notif_ID": "NOTIF_20260716_I3PMMJ",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: Give the draft templates of certificates for Arogyamanthan",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-16 02:46:21"
+  },
+  {
+    "Notif_ID": "NOTIF_20260717_M8DQH2",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Prepare the list of schools, ITI, diploma colleges",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-17 04:36:16"
+  },
+  {
+    "Notif_ID": "NOTIF_20260717_BQZ39Y",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: Prepare salary extract and attendance extract including Stapley and Megha",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-17 04:37:47"
+  },
+  {
+    "Notif_ID": "NOTIF_20260717_JOUTRN",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: Prepare salary extract and attendance extract including Stapley and Megha",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-17 04:37:50"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_NVGEIR",
+    "User_ID": "EMP_008",
+    "Message": "New task assigned: Present the discussion and way forward of school visit",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:47:53"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_Z2NT08",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Present the discussion and way forward of school visit",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:47:53"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_E191QI",
+    "User_ID": "EMP_008",
+    "Message": "New task assigned: Plan for bridge course and programms for schools",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:49:27"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_EW3BJU",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Plan for bridge course and programms for schools",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:49:27"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_YFKB5P",
+    "User_ID": "EMP_008",
+    "Message": "New task assigned: Flyer and content to discuss in school",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:50:22"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_6ZSXJ8",
+    "User_ID": "EMP_007",
+    "Message": "New task assigned: Flyer and content to discuss in school",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:50:22"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_5XBS7V",
+    "User_ID": "EMP_003",
+    "Message": "New task assigned: Accommodation google form - discuss with Mona",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:51:40"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_Y7GCQW",
+    "User_ID": "EMP_002",
+    "Message": "New task assigned: All files to be checked and verified",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:53:09"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_57KWZW",
+    "User_ID": "EMP_004",
+    "Message": "New task assigned: All files to be checked and verified",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:53:09"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_K02TZ8",
+    "User_ID": "EMP_005",
+    "Message": "New task assigned: All files to be checked and verified",
+    "Type": "task_assigned",
+    "Read_Status": "read",
+    "Created_At": "2026-07-18 03:53:09"
+  },
+  {
+    "Notif_ID": "NOTIF_20260718_069O7Z",
+    "User_ID": "EMP_006",
+    "Message": "New task assigned: All files to be checked and verified",
+    "Type": "task_assigned",
+    "Read_Status": "unread",
+    "Created_At": "2026-07-18 03:53:09"
+  }
+]

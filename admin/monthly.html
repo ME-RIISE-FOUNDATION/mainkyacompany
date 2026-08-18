@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monthly View — ME-RIISE FOUNDATION</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="tbi-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="tbi-main-wrap">
+    <div id="topbarContainer"></div>
+    <main class="tbi-content" id="pageContent"></main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await TBI.ready();
+  if (!renderShell('Monthly View', true)) return;
+  TBI.autoReloadOnSync();   // refresh when another dashboard changes the data
+
+  backfillCompletedDates();
+
+  const employees = DB.getAll('employees');
+  const empMap    = Object.fromEntries(employees.map(e => [e.Employee_ID, e]));
+  const tasks     = DB.getAll('tasks');
+  const params    = getParams();
+
+  // Selected month — "YYYY-MM"; default to the current month.
+  const curMonth  = Utils.today().slice(0, 7);
+  const month     = /^\d{4}-\d{2}$/.test(params.get('m') || '') ? params.get('m') : curMonth;
+  const monStart  = month + '-01';
+  const monEnd    = month + '-31';                    // string compare upper bound (YYYY-MM-DD)
+  const [yy, mm]  = month.split('-').map(Number);
+  const prevMonth = (mm === 1) ? `${yy-1}-12` : `${yy}-${String(mm-1).padStart(2,'0')}`;
+  const nextMonth = (mm === 12)? `${yy+1}-01` : `${yy}-${String(mm+1).padStart(2,'0')}`;
+  const monthName = new Date(yy, mm-1, 1).toLocaleDateString('en-GB', {month:'long', year:'numeric'});
+
+  // Classify a task for the selected month:
+  //   'completed' — done within this month
+  //   'carried'   — assigned by this month's end and still open during it
+  //   null        — not relevant to this month
+  const classify = t => {
+    const assigned = (t.Assigned_Date || '').slice(0, 10);
+    if (assigned && assigned > monEnd) return null;          // not yet assigned in this month
+    const isDone   = ['Completed','Approved'].includes(t.Status);
+    const done     = isDone ? (t.Completed_Date || '').slice(0, 10) : '';
+    if (isDone && done) {
+      if (done < monStart) return null;                      // finished in an earlier month
+      if (done <= monEnd)  return 'completed';               // completed this month
+      return 'carried';                                      // still open during this month
+    }
+    return 'carried';                                        // open / not yet completed
+  };
+
+  const rows = [];
+  tasks.forEach(t => { const k = classify(t); if (k) rows.push({ t, kind: k }); });
+
+  const completedCount = rows.filter(r => r.kind === 'completed').length;
+  const carriedCount   = rows.filter(r => r.kind === 'carried').length;
+
+  // Completed/approved tasks are hidden by default so the month shows only what
+  // still needs doing while updating; the "Show completed" switch (?completed=1)
+  // brings them back.
+  const showCompleted = params.get('completed') === '1';
+  const compQ         = showCompleted ? '&completed=1' : '';
+  const visibleRows   = showCompleted ? rows : rows.filter(r => r.kind !== 'completed');
+
+  // Group by employee in designation order
+  const order = ['CEO','COO','TBI Manager','Programme Associate/Outreach officer','Software Associate','Finance Associate','Innovation Associate','Support Staff'];
+  employees.sort((a,b) => { const ai=order.indexOf(a.Designation); const bi=order.indexOf(b.Designation); return (ai<0?99:ai)-(bi<0?99:bi); });
+  const groups = {};
+  visibleRows.forEach(r => { (groups[r.t.Employee_ID] = groups[r.t.Employee_ID] || []).push(r); });
+  const groupOrderIds = employees.map(e => e.Employee_ID).filter(id => groups[id]);
+
+  const renderRow = (r, n) => {
+    const t = r.t;
+    const carried = r.kind === 'carried';
+    const fromPrev = carried && (t.Assigned_Date || '').slice(0,10) < monStart;
+    const completedDays = (r.kind === 'completed' && t.Completed_Date)
+      ? Utils.daysBetween(t.Assigned_Date, t.Completed_Date) : null;
+    const thisMonthCell = !carried
+      ? `<span class="badge bg-success"><i class="bi bi-check2 me-1"></i>Completed</span>`
+      : fromPrev
+        ? `<span class="badge bg-warning text-dark"><i class="bi bi-arrow-right-circle me-1"></i>Carried over</span>`
+        : `<span class="badge bg-secondary"><i class="bi bi-hourglass-split me-1"></i>Pending</span>`;
+    return `<tr class="${carried?'table-warning':''}">
+      <td class="small">${n}</td>
+      <td>
+        <div class="fw-500">${Utils.esc(t.Task_Title)}</div>
+        ${t.Description?`<small class="text-muted">${Utils.esc(t.Description.slice(0,60))}…</small>`:''}
+      </td>
+      <td>${Utils.priorityBadge(t.Priority)}</td>
+      <td class="small">${Utils.formatDate(t.Assigned_Date)}</td>
+      <td class="small">${Utils.formatDate(t.Deadline)}</td>
+      <td>${thisMonthCell}</td>
+      <td class="small">${r.kind==='completed' ? Utils.formatDateTime(t.Completed_Date) : '<span class="text-muted">—</span>'}</td>
+      <td class="text-center">${completedDays===null ? '<span class="text-muted">—</span>' : `<span class="badge bg-info">${completedDays}d</span>`}</td>
+    </tr>`;
+  };
+
+  const tableRows = visibleRows.length ? groupOrderIds.map(id => {
+    const emp  = empMap[id];
+    const list = groups[id];
+    const done = list.filter(r => r.kind === 'completed').length;
+    const carr = list.filter(r => r.kind === 'carried').length;
+    const header = `<tr class="task-group-header">
+      <td colspan="8" class="fw-700">
+        <i class="bi bi-person-fill me-1"></i>${Utils.esc(emp?.Name || id)}
+        <span class="fw-normal text-muted small"> — ${Utils.esc(emp?.Designation || '')}
+          ${showCompleted ? `· <span class="text-success">${done} completed</span> ` : ''}· <span class="text-warning">${carr} carried</span></span>
+      </td>
+    </tr>`;
+    return header + list.map((r, i) => renderRow(r, i + 1)).join('');
+  }).join('') : `<tr><td colspan="8" class="text-center py-4 text-muted">No ${showCompleted?'':'pending '}tasks for ${Utils.esc(monthName)}${!showCompleted && completedCount ? ` — ${completedCount} completed (turn on “Show completed” to view)` : ''}</td></tr>`;
+
+  document.getElementById('pageContent').innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+      <h4 class="fw-700 mb-0"><i class="bi bi-calendar3 me-2 text-primary"></i>Monthly View</h4>
+      <a href="tasks.html" class="btn btn-outline-secondary"><i class="bi bi-list-task me-1"></i>All Tasks</a>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-2">
+          <a href="monthly.html?m=${prevMonth}${compQ}" class="btn btn-outline-primary"><i class="bi bi-chevron-left"></i></a>
+          <div class="text-center" style="min-width:160px">
+            <div class="fw-700 fs-5">${monthName}</div>
+            <div class="small text-muted">${month === curMonth ? 'Current month' : ''}</div>
+          </div>
+          <a href="monthly.html?m=${nextMonth}${compQ}" class="btn btn-outline-primary"><i class="bi bi-chevron-right"></i></a>
+          <input type="month" id="monthPicker" class="form-control ms-2" style="max-width:170px" value="${month}">
+        </div>
+        <div class="d-flex gap-2 flex-wrap align-items-center">
+          <span class="badge bg-success fs-6 px-3 py-2"><i class="bi bi-check2-circle me-1"></i>${completedCount} completed this month</span>
+          <span class="badge bg-warning text-dark fs-6 px-3 py-2"><i class="bi bi-arrow-right-circle me-1"></i>${carriedCount} carried over</span>
+          <div class="form-check form-switch ms-2 mb-0">
+            <input class="form-check-input" type="checkbox" role="switch" id="toggleCompleted" ${showCompleted?'checked':''}>
+            <label class="form-check-label small text-muted" for="toggleCompleted">Show completed</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light"><tr><th>#</th><th>Task Title</th><th>Priority</th><th>Assigned</th><th>Deadline</th><th>This Month</th><th>Completed On</th><th>Completed Days</th></tr></thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="small text-muted mt-3">
+      <i class="bi bi-info-circle me-1"></i>Completed tasks appear under the month they were finished.
+      Pending tasks are <span class="text-warning fw-600">carried over</span> into every following month until they are completed.
+    </div>
+  `;
+
+  document.getElementById('monthPicker')?.addEventListener('change', e => {
+    if (e.target.value) window.location.href = 'monthly.html?m=' + e.target.value + compQ;
+  });
+  document.getElementById('toggleCompleted')?.addEventListener('change', e => {
+    window.location.href = 'monthly.html?m=' + month + (e.target.checked ? '&completed=1' : '');
+  });
+});
+</script>
+</body>
+</html>

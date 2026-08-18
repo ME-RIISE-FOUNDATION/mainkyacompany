@@ -1,0 +1,25 @@
+# Google credentials — NEVER commit this
+config/credentials.json
+
+# MySQL connection settings (contains the DB password) — NEVER commit this
+config/database.php
+
+# Composer vendor directory (built during Docker build)
+vendor/
+
+# Uploaded files
+uploads/*
+!uploads/.gitkeep
+
+# IDE / OS
+.DS_Store
+.vscode/
+*.swp
+*.swo
+
+# PHP error logs
+*.log
+
+# Local env overrides
+.env
+.env.local

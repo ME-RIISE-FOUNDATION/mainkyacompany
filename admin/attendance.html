@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance — ME-RIISE FOUNDATION</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="tbi-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="tbi-main-wrap">
+    <div id="topbarContainer"></div>
+    <main class="tbi-content" id="pageContent"></main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.7.1/dist/jspdf.plugin.autotable.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await TBI.ready();
+  if (!renderShell('Attendance', true)) return;
+  TBI.autoReloadOnSync();   // refresh when another dashboard changes the data
+
+  const params    = getParams();
+  const date      = params.get('date') || Utils.today();
+  const employees = staffOnly(DB.getAll('employees'));   // the CEO is the head/admin, not tracked as staff
+  const order = ['CEO','COO','TBI Manager','Programme Associate/Outreach officer','Software Associate','Finance Associate','Innovation Associate','Support Staff'];
+  employees.sort((a,b) => { const ai=order.indexOf(a.Designation); const bi=order.indexOf(b.Designation); return (ai<0?99:ai)-(bi<0?99:bi); });
+
+  const recs   = DB.getAll('attendance').filter(a => a.Date === date);
+  const recMap = Object.fromEntries(recs.map(r => [r.Employee_ID, r]));
+  const fmt    = t => t ? t.slice(11) : '—';
+
+  let present = 0, working = 0;
+  const rows = employees.map((emp, i) => {
+    const r = recMap[emp.Employee_ID] || {};
+    const checkedIn  = !!r.Check_In;
+    const checkedOut = !!r.Check_Out;
+    if (checkedIn) present++;
+    if (checkedIn && !checkedOut) working++;
+    const status = checkedOut ? '<span class="badge bg-success">Present</span>'
+                 : checkedIn  ? '<span class="badge bg-info">Working</span>'
+                 : emp.Status === 'On Leave' ? '<span class="badge bg-warning text-dark"><i class="bi bi-umbrella me-1"></i>On Leave</span>'
+                 : '<span class="badge bg-danger">Absent</span>';
+    return `<tr>
+      <td class="small">${i+1}</td>
+      <td><div class="fw-500 small">${Utils.esc(emp.Name)}</div></td>
+      <td class="small text-muted">${Utils.esc(emp.Designation)}</td>
+      <td class="small">${fmt(r.Login_Time)}</td>
+      <td class="small">${fmt(r.Check_In)}</td>
+      <td class="small">${fmt(r.Check_Out)}</td>
+      <td class="small fw-600">${Attendance.workedHours(r)}</td>
+      <td>${status}</td>
+    </tr>`;
+  }).join('');
+
+  const absent = employees.length - present;
+  const dateLabel = new Date(date).toLocaleDateString('en-GB', {weekday:'long', day:'2-digit', month:'short', year:'numeric'});
+
+  document.getElementById('pageContent').innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+      <div>
+        <h4 class="fw-700 mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>Attendance</h4>
+        <small class="text-muted">${Utils.esc(dateLabel)}</small>
+      </div>
+      <div class="d-flex gap-2 align-items-end flex-wrap">
+        <div>
+          <label class="form-label small mb-1">Date</label>
+          <input type="date" class="form-control form-control-sm" id="dateInput" value="${Utils.esc(date)}" max="${Utils.today()}">
+        </div>
+        <button class="btn btn-sm btn-primary" onclick="applyDate()">View</button>
+        <button class="btn btn-sm btn-outline-success" onclick="exportTableExcel('attendanceTable','ME-RIISE_FOUNDATION_Attendance')"><i class="bi bi-file-earmark-excel me-1"></i>Excel</button>
+        <button class="btn btn-sm btn-outline-danger" onclick="exportTablePDF('attendanceTable','Attendance Report — ${Utils.esc(dateLabel)}')"><i class="bi bi-file-earmark-pdf me-1"></i>PDF</button>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3"><div class="stat-card border-start border-primary border-4 text-center"><div class="stat-icon text-primary"><i class="bi bi-people-fill"></i></div><div class="stat-val text-primary">${employees.length}</div><div class="stat-lbl">Employees</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-card border-start border-success border-4 text-center"><div class="stat-icon text-success"><i class="bi bi-check2-circle"></i></div><div class="stat-val text-success">${present}</div><div class="stat-lbl">Present</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-card border-start border-info border-4 text-center"><div class="stat-icon text-info"><i class="bi bi-hourglass-split"></i></div><div class="stat-val text-info">${working}</div><div class="stat-lbl">Working now</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-card border-start border-danger border-4 text-center"><div class="stat-icon text-danger"><i class="bi bi-x-circle"></i></div><div class="stat-val text-danger">${absent}</div><div class="stat-lbl">Absent</div></div></div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0" id="attendanceTable">
+            <thead class="table-light"><tr><th>#</th><th>Employee</th><th>Designation</th><th>Login Time</th><th>Check In</th><th>Check Out</th><th>Worked</th><th>Status</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+});
+
+function applyDate() {
+  const d = document.getElementById('dateInput').value || Utils.today();
+  window.location.href = 'attendance.html?date=' + d;
+}
+</script>
+</body>
+</html>

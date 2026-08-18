@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Task — ME-RIISE FOUNDATION</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="tbi-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="tbi-main-wrap">
+    <div id="topbarContainer"></div>
+    <main class="tbi-content" id="pageContent"></main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await TBI.ready();
+  const editId = getParams().get('edit') || '';
+  const task   = editId ? DB.findOne('tasks', 'Task_ID', editId) : null;
+  const isEdit = !!task;
+  const title  = isEdit ? 'Edit Task' : 'Create Task';
+
+  if (!renderShell(title, true)) return;
+
+  const session   = Auth.getSession();
+  const employees = staffOnly(DB.getAll('employees'));   // tasks are assigned to staff, not the CEO/head
+  const order = ['CEO','COO','TBI Manager','Programme Associate/Outreach officer','Software Associate','Finance Associate','Innovation Associate','Support Staff'];
+  employees.sort((a,b) => { const ai=order.indexOf(a.Designation); const bi=order.indexOf(b.Designation); return (ai<0?99:ai)-(bi<0?99:bi); });
+
+  const onLeaveTag = e => e.Status === 'On Leave' ? ' <span class="badge bg-warning text-dark">On Leave</span>' : '';
+  const empOptions = employees.map(e =>
+    `<option value="${Utils.esc(e.Employee_ID)}" ${task?.Employee_ID===e.Employee_ID?'selected':''}>${Utils.esc(e.Name)} — ${Utils.esc(e.Designation)}${e.Status==='On Leave'?' (On Leave)':''}</option>`
+  ).join('');
+
+  const empChecks = employees.map(e =>
+    `<div class="form-check">
+       <input class="form-check-input emp-assign-chk" type="checkbox" value="${Utils.esc(e.Employee_ID)}" id="empAssign_${Utils.esc(e.Employee_ID)}">
+       <label class="form-check-label small" for="empAssign_${Utils.esc(e.Employee_ID)}">${Utils.esc(e.Name)} <span class="text-muted">— ${Utils.esc(e.Designation)}</span>${onLeaveTag(e)}</label>
+     </div>`
+  ).join('');
+
+  const priorityOptions = PRIORITIES.map(p =>
+    `<option value="${p}" ${(task?.Priority||'Medium')===p?'selected':''}>${p}</option>`
+  ).join('');
+
+  const statusOptions = TASK_STATUSES.map(s =>
+    `<option value="${s}" ${task?.Status===s?'selected':''}>${s}</option>`
+  ).join('');
+
+  document.getElementById('pageContent').innerHTML = `
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <a href="tasks.html" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+      <h4 class="fw-700 mb-0">
+        <i class="bi bi-${isEdit?'pencil':'plus-circle'} me-2 text-primary"></i>${isEdit?'Edit Task':'Create New Task'}
+      </h4>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div id="formAlert"></div>
+            <div class="row g-3">
+              ${isEdit ? `
+              <div class="col-12">
+                <label class="form-label fw-500">Assign To <span class="text-danger">*</span></label>
+                <select class="form-select" id="employee_id" required>
+                  <option value="">Select Employee…</option>
+                  ${empOptions}
+                </select>
+              </div>` : `
+              <div class="col-12">
+                <label class="form-label fw-500">Assign To <span class="text-danger">*</span></label>
+                <div class="border rounded p-2" style="max-height:210px;overflow-y:auto;background:var(--theme-bg-light)">
+                  <div class="form-check border-bottom pb-1 mb-1">
+                    <input class="form-check-input" type="checkbox" id="empAssignAll" onchange="toggleAllEmps(this)">
+                    <label class="form-check-label small fw-600" for="empAssignAll">Select all employees</label>
+                  </div>
+                  ${empChecks}
+                </div>
+                <div class="form-text">Tick one or more employees to assign this same task to all of them.</div>
+              </div>`}
+              <div class="col-12">
+                <label class="form-label fw-500">Task Title <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="title" value="${Utils.esc(task?.Task_Title||'')}" placeholder="Enter task title" required maxlength="200">
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-500">Description</label>
+                <textarea class="form-control" id="description" rows="4" placeholder="Detailed task description…">${Utils.esc(task?.Description||'')}</textarea>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label fw-500">Priority</label>
+                <select class="form-select" id="priority">${priorityOptions}</select>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label fw-500">Start Date</label>
+                <input type="date" class="form-control" id="start_date" value="${Utils.esc(task?.Assigned_Date||Utils.today())}">
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label fw-500">Deadline <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="deadline" value="${Utils.esc(task?.Deadline||'')}" min="${Utils.today()}" required>
+                <div class="form-text">Cannot be a past date</div>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label fw-500">Completion Time</label>
+                <input type="time" class="form-control" id="deadline_time" value="${Utils.esc(task?.Deadline_Time||'')}">
+                <div class="form-text">Time by which the task should be completed</div>
+              </div>
+              ${isEdit ? `
+              <div class="col-6 col-md-4">
+                <label class="form-label fw-500">Status</label>
+                <select class="form-select" id="status">${statusOptions}</select>
+              </div>` : ''}
+              <div class="col-12">
+                <label class="form-label fw-500">Attachment Note</label>
+                <input type="text" class="form-control" id="file_url" value="${Utils.esc(task?.File_URL||'')}" placeholder="Link or reference to attachment (URL or description)…">
+                <div class="form-text">Enter a URL or brief note about any attachments</div>
+              </div>
+            </div>
+            <div class="d-flex gap-3 mt-4">
+              <button type="button" class="btn btn-primary px-4" onclick="saveTask()">
+                <i class="bi bi-${isEdit?'save':'plus-circle'} me-2"></i>${isEdit?'Save Changes':'Create Task'}
+              </button>
+              <a href="tasks.html" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+});
+
+function toggleAllEmps(box) {
+  document.querySelectorAll('.emp-assign-chk').forEach(c => c.checked = box.checked);
+}
+
+async function saveTask() {
+  const editId      = getParams().get('edit') || '';
+  const task        = editId ? DB.findOne('tasks', 'Task_ID', editId) : null;
+  const isEdit      = !!task;
+  const session     = Auth.getSession();
+
+  const title        = document.getElementById('title').value.trim();
+  const description  = document.getElementById('description').value.trim();
+  const priority     = document.getElementById('priority').value;
+  const startDate    = document.getElementById('start_date').value || Utils.today();
+  const deadline     = document.getElementById('deadline').value;
+  const deadlineTime = document.getElementById('deadline_time').value || '';
+  const fileUrl      = document.getElementById('file_url').value.trim();
+  const status       = isEdit ? (document.getElementById('status')?.value || task.Status) : 'Pending';
+  const alertEl      = document.getElementById('formAlert');
+
+  // Collect target employees: single dropdown when editing, checkboxes when creating
+  const employeeIds = isEdit
+    ? [document.getElementById('employee_id').value].filter(Boolean)
+    : [...document.querySelectorAll('.emp-assign-chk:checked')].map(c => c.value);
+
+  if (!employeeIds.length || !title || !deadline) {
+    alertEl.innerHTML = `<div class="alert alert-danger py-2 mb-3"><i class="bi bi-exclamation-circle me-1"></i>At least one employee, Title, and Deadline are required.</div>`;
+    return;
+  }
+  // A deadline can never be set in the past; for an existing task it may stay
+  // where it already was, but it cannot be moved further back.
+  const minDeadline = isEdit ? (task.Deadline && task.Deadline < Utils.today() ? task.Deadline : Utils.today()) : Utils.today();
+  if (deadline < minDeadline) {
+    alertEl.innerHTML = `<div class="alert alert-danger py-2 mb-3"><i class="bi bi-exclamation-circle me-1"></i>Deadline cannot be a past date. Please pick today or a future date.</div>`;
+    return;
+  }
+  if (deadline < startDate) {
+    alertEl.innerHTML = `<div class="alert alert-danger py-2 mb-3"><i class="bi bi-exclamation-circle me-1"></i>Deadline cannot be before the start date.</div>`;
+    return;
+  }
+  alertEl.innerHTML = '';
+
+  if (isEdit) {
+    DB.updateById('tasks', 'Task_ID', editId, {
+      Employee_ID: employeeIds[0], Task_Title: title, Description: description,
+      Priority: priority, Assigned_Date: startDate, Deadline: deadline, Deadline_Time: deadlineTime,
+      Status: status, File_URL: fileUrl, Assigned_By: session.name
+    });
+    setFlash('success', 'Task updated successfully.');
+  } else {
+    const now = new Date().toISOString().replace('T',' ').slice(0,19);
+    employeeIds.forEach(employeeId => {
+      DB.append('tasks', {
+        Task_ID: Utils.generateId('TSK'), Employee_ID: employeeId, Task_Title: title, Description: description,
+        Priority: priority, Assigned_Date: startDate, Deadline: deadline, Deadline_Time: deadlineTime,
+        Status: 'Pending', Days_Pending: 0, Assigned_By: session.name, File_URL: fileUrl, Notes: ''
+      });
+      DB.append('notifications', {
+        Notif_ID: Utils.generateId('NOTIF'), User_ID: employeeId,
+        Message: `New task assigned: ${title}`, Type: 'task_assigned',
+        Read_Status: 'unread', Created_At: now
+      });
+    });
+    setFlash('success', employeeIds.length > 1
+      ? `Task assigned to ${employeeIds.length} employees successfully.`
+      : 'Task created and assigned successfully.');
+  }
+  await API.flush();
+  if (API.pending() > 0) {
+    setFlash('warning', 'Saved on this device but not yet synced to the server (it is offline or restarting). The task is queued and will sync automatically — keep this browser; do not clear its data.');
+  }
+  window.location.href = 'tasks.html';
+}
+</script>
+</body>
+</html>

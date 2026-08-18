@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Approvals — ME-RIISE FOUNDATION</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="../assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="tbi-wrapper">
+  <div id="sidebarContainer"></div>
+  <div class="tbi-main-wrap">
+    <div id="topbarContainer"></div>
+    <main class="tbi-content" id="pageContent"></main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await TBI.ready();
+  if (!renderShell('Approval Workflow', true)) return;
+  renderPage();
+  TBI.onSync(renderPage);   // repaint when another dashboard changes the data
+});
+
+function renderPage() {
+  const session   = Auth.getSession();
+  const approvals = DB.getAll('approvals');
+  const tasks     = DB.getAll('tasks');
+  const employees = DB.getAll('employees');
+  const taskMap   = Object.fromEntries(tasks.map(t => [t.Task_ID, t]));
+  const empMap    = Object.fromEntries(employees.map(e => [e.Employee_ID, e]));
+
+  const pending = approvals.filter(a => a.Status === 'Pending');
+  const decided = approvals.filter(a => a.Status !== 'Pending').slice().reverse();
+
+  const pendingCards = pending.length ? pending.map(appr => {
+    const task = taskMap[appr.Task_ID] || {};
+    const emp  = empMap[appr.Employee_ID] || {};
+    const ini  = Utils.initials(emp.Name || '');
+    return `
+      <div class="col-12 col-md-6 col-xl-4">
+        <div class="card border-0 shadow-sm h-100" style="border-left:3px solid var(--c-warning)!important">
+          <div class="card-body">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              ${emp.Photo_URL ? `<img src="${Utils.esc(emp.Photo_URL)}" class="rounded-circle" width="42" height="42" style="object-fit:cover;border:2px solid var(--glass-bd2)">` : `<div class="emp-avatar-initials" style="width:42px;height:42px;font-size:.82rem">${Utils.esc(ini)}</div>`}
+              <div>
+                <div class="fw-600">${Utils.esc(emp.Name||'—')}</div>
+                <div class="text-muted small">${Utils.esc(emp.Designation||'')}</div>
+              </div>
+              <div class="ms-auto">${Utils.priorityBadge(task.Priority||'')}</div>
+            </div>
+            <div class="fw-600 mb-1">${Utils.esc(task.Task_Title||'—')}</div>
+            ${task.Description ? `<div class="text-muted small mb-2">${Utils.esc(task.Description.slice(0,100))}…</div>` : ''}
+            <div class="d-flex flex-wrap gap-3 text-muted small mb-3">
+              <span><i class="bi bi-calendar me-1"></i>Deadline: ${Utils.formatDate(task.Deadline)}</span>
+              <span><i class="bi bi-clock me-1"></i>Submitted: ${Utils.formatDate(appr.Submission_Date)}</span>
+            </div>
+            ${task.File_URL ? `<div class="mb-3"><a href="${Utils.esc(task.File_URL)}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="bi bi-paperclip me-1"></i>View Attachment</a></div>` : ''}
+            <div class="mb-2">
+              <textarea class="form-control form-control-sm" id="comments_${appr.Approval_ID}" rows="2" placeholder="Review comments (optional)…"></textarea>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-success btn-sm flex-fill" onclick="processApproval('${appr.Approval_ID}','approve')">
+                <i class="bi bi-check2 me-1"></i>Approve
+              </button>
+              <button class="btn btn-danger btn-sm flex-fill" onclick="processApproval('${appr.Approval_ID}','reject')">
+                <i class="bi bi-x me-1"></i>Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('') : `<div class="col-12"><div class="alert alert-success"><i class="bi bi-check2-all me-2"></i>No pending approvals — all caught up!</div></div>`;
+
+  const historyRows = decided.length ? decided.map(appr => {
+    const task = taskMap[appr.Task_ID] || {};
+    const emp  = empMap[appr.Employee_ID] || {};
+    return `<tr>
+      <td><div class="small fw-500">${Utils.esc(emp.Name||'—')}</div><div class="text-muted" style="font-size:.7rem">${Utils.esc(emp.Designation||'')}</div></td>
+      <td class="small">${Utils.esc(task.Task_Title||(appr.Task_ID||''))}</td>
+      <td class="small">${Utils.formatDate(appr.Submission_Date)}</td>
+      <td class="small">${Utils.esc(appr.Approved_By||'—')}</td>
+      <td>${Utils.statusBadge(appr.Status)}</td>
+      <td class="small text-muted">${Utils.esc(appr.Comments||'—')}</td>
+      <td class="small">${Utils.formatDate(appr.Approval_Date)}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="7" class="text-center text-muted py-4">No history yet</td></tr>`;
+
+  document.getElementById('pageContent').innerHTML = `
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <h4 class="fw-700 mb-0">
+        <i class="bi bi-check2-circle me-2 text-primary"></i>Approval Workflow
+        ${pending.length > 0 ? `<span class="badge bg-danger ms-1">${pending.length} pending</span>` : ''}
+      </h4>
+    </div>
+
+    <h5 class="fw-600 mb-3 text-warning"><i class="bi bi-clock me-2"></i>Awaiting Review (${pending.length})</h5>
+    <div class="row g-3 mb-5">${pendingCards}</div>
+
+    <h5 class="fw-600 mb-3"><i class="bi bi-clock-history me-2"></i>Approval History</h5>
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light"><tr><th>Employee</th><th>Task</th><th>Submitted</th><th>Reviewed By</th><th>Decision</th><th>Comments</th><th>Date</th></tr></thead>
+            <tbody>${historyRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function processApproval(approvalId, action) {
+  const msg = action === 'approve' ? 'Approve this task?' : 'Reject this task?';
+  if (!confirm(msg)) return;
+
+  const session  = Auth.getSession();
+  const approval = DB.findOne('approvals', 'Approval_ID', approvalId);
+  if (!approval) return;
+
+  const comments   = document.getElementById(`comments_${approvalId}`)?.value.trim() || '';
+  const newStatus  = action === 'approve' ? 'Approved' : 'Rejected';
+  const now        = Utils.nowStamp();
+
+  DB.updateById('approvals', 'Approval_ID', approvalId, {Status:newStatus, Approved_By:session.name, Comments:comments, Approval_Date:now});
+  // An approved task is a completed task — make sure it carries its completion
+  // date & time so it shows as completed everywhere immediately.
+  const taskPatch = {Status:newStatus, Notes:comments};
+  if (newStatus === 'Approved') {
+    const t0 = DB.findOne('tasks', 'Task_ID', approval.Task_ID);
+    taskPatch.Completed_Date = (t0 && t0.Completed_Date) || approval.Submission_Date || now;
+  }
+  DB.updateById('tasks', 'Task_ID', approval.Task_ID, taskPatch);
+
+  const task = DB.findOne('tasks', 'Task_ID', approval.Task_ID);
+  DB.append('notifications', {
+    Notif_ID: Utils.generateId('NOTIF'), User_ID: approval.Employee_ID,
+    Message: `Your task has been ${newStatus}: ${task?.Task_Title||''}`,
+    Type: 'approval_result', Read_Status: 'unread', Created_At: now
+  });
+
+  setFlash('success', `Task ${newStatus} successfully.`);
+  renderPage();
+  showFlash('success', `Task ${newStatus} successfully.`);
+}
+</script>
+</body>
+</html>
