@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const visibleRows   = showCompleted ? rows : rows.filter(r => r.kind !== 'completed');
 
   // Group by employee in designation order
-  const order = ['CEO','COO','TBI Manager','Programme Associate/Outreach officer','Software Associate','Finance Associate','Innovation Associate','Support Staff'];
+  const order = DESIGNATIONS;
   employees.sort((a,b) => { const ai=order.indexOf(a.Designation); const bi=order.indexOf(b.Designation); return (ai<0?99:ai)-(bi<0?99:bi); });
   const groups = {};
   visibleRows.forEach(r => { (groups[r.t.Employee_ID] = groups[r.t.Employee_ID] || []).push(r); });

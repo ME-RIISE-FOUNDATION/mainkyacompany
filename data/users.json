@@ -1,11 +1,65 @@
 [
   {
     "User_ID": "USR_001",
-    "Username": "admin",
-    "Password_Hash": "$2y$10$FV3E0wlWaBeG6EuxjgiWgeLqXdg0zpkXvNCQWrMXfFd3SeQ3X6QZ6",
+    "Username": "rahamath",
+    "Password_Hash": "$2y$10$RNlj5V4TM0UB15ESwJICr.7WkBrSg1K/Ouhyr.DSZCP6rxxNsb00K",
     "Designation": "CEO",
     "Employee_ID": "EMP_001",
-    "Email": "admin@example.com",
-    "Name": "Administrator"
+    "Email": "manikyamoneyservices@gmail.com",
+    "Name": "Rahamath Kanchagar"
+  },
+  {
+    "User_ID": "USR_002",
+    "Username": "dixith",
+    "Password_Hash": "$2y$10$EaLG1r3QZqGsnMaUAZptOebOK47Yly/rugtCxcBql0SVG1lDm3g8m",
+    "Designation": "Operation and Business Head",
+    "Employee_ID": "EMP_002",
+    "Email": "deekshithu91@gmail.com",
+    "Name": "Dixith"
+  },
+  {
+    "User_ID": "USR_003",
+    "Username": "deekshith",
+    "Password_Hash": "$2y$10$xHi.uTEpKHCSmyxs89WF3uwm2vLKUAIt2GSwYQJCBMc5kCyEaFy26",
+    "Designation": "Software Developer",
+    "Employee_ID": "EMP_003",
+    "Email": "deekshithchandra843@gmail.com",
+    "Name": "Deekshith Chandra"
+  },
+  {
+    "User_ID": "USR_004",
+    "Username": "arbaz",
+    "Password_Hash": "$2y$10$JD7merIiuKx174R5e41jEOlw0MWeEE2tOeDzgyQNqr16Oh0iglSu.",
+    "Designation": "Visual Editor & Cameraman",
+    "Employee_ID": "EMP_004",
+    "Email": "mohammedarbazbadiger@gmail.com",
+    "Name": "Arbaz N Badiger"
+  },
+  {
+    "User_ID": "USR_005",
+    "Username": "mahadev",
+    "Password_Hash": "$2y$10$ZXf.CkjrA40mzgZGAHKP8OGb5V3YA16pXlCjc.oqpu8qDZG/SFlm.",
+    "Designation": "Software Engineer",
+    "Employee_ID": "EMP_005",
+    "Email": "kawanemahadev@gmail.com",
+    "Name": "Mahadev Kedari Kawane"
+  },
+  {
+    "User_ID": "USR_006",
+    "Username": "jnyan",
+    "Password_Hash": "$2y$10$dKmonpYTmz30hRD..KkraePyDjKLY5wPhyV9hf7TPA1rLJj0Lp6K.",
+    "Designation": "Full Stack Developer",
+    "Employee_ID": "EMP_006",
+    "Email": "jnyanp52@gmail.com",
+    "Name": "Jnyan P"
+  },
+  {
+    "User_ID": "USR_007",
+    "Username": "chandulal",
+    "Password_Hash": "$2y$10$DNKfDVWC6Fc2f0uNqH5gm.f.EjTeuAxljg/cOySTSYBkIG06qdv7G",
+    "Designation": "News Junction Operator",
+    "Employee_ID": "EMP_007",
+    "Email": "Cgowda109@gmail.com",
+    "Name": "Chandulal D K"
   }
 ]

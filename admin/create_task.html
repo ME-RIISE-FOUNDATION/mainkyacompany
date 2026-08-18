@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const session   = Auth.getSession();
   const employees = staffOnly(DB.getAll('employees'));   // tasks are assigned to staff, not the CEO/head
-  const order = ['CEO','COO','TBI Manager','Programme Associate/Outreach officer','Software Associate','Finance Associate','Innovation Associate','Support Staff'];
+  const order = DESIGNATIONS;
   employees.sort((a,b) => { const ai=order.indexOf(a.Designation); const bi=order.indexOf(b.Designation); return (ai<0?99:ai)-(bi<0?99:bi); });
 
   const onLeaveTag = e => e.Status === 'On Leave' ? ' <span class="badge bg-warning text-dark">On Leave</span>' : '';

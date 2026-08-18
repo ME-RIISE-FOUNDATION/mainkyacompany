@@ -37,7 +37,7 @@ if (document.getElementById('pageContent')) showBootLoader();
 const ADMIN_ROLES   = ['CEO'];
 const TASK_STATUSES = ['Pending', 'In Progress', 'Completed', 'Approved', 'Rejected'];
 const PRIORITIES    = ['High', 'Medium', 'Low'];
-const DESIGNATIONS  = ['CEO', 'COO', 'TBI Manager', 'Programme Associate/Outreach officer', 'Software Associate', 'Finance Associate', 'Innovation Associate', 'Support Staff'];
+const DESIGNATIONS  = ['CEO', 'Operation and Business Head', 'Software Developer', 'Full Stack Developer', 'Software Engineer', 'Visual Editor & Cameraman', 'News Junction Operator'];
 
 // ── Server sync ───────────────────────────────────────────────
 // Served over http(s) => a PHP backend is present and is the shared source of
@@ -49,8 +49,8 @@ const ENTITIES    = ['employees', 'users', 'tasks', 'approvals', 'notifications'
 // Set these two values per client. Everything else — page titles, sidebar,
 // login screen, PDF/Excel report headers and export filenames — derives from
 // them, so branding this app for a new company is a one-line change here.
-const COMPANY_NAME    = 'Task Scheduler';   // e.g. 'Acme Pvt Ltd'
-const COMPANY_TAGLINE = '';                 // optional; shown on login + reports
+const COMPANY_NAME    = 'Manikya Money Services';   // e.g. 'Acme Pvt Ltd'
+const COMPANY_TAGLINE = '';                         // optional; shown on login + reports
 const COMPANY_SLUG    = () => COMPANY_NAME.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '');
 
 const API = {

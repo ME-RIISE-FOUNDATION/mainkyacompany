@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const params    = getParams();
   const date      = params.get('date') || Utils.today();
   const employees = staffOnly(DB.getAll('employees'));   // the CEO is the head/admin, not tracked as staff
-  const order = ['CEO','COO','TBI Manager','Programme Associate/Outreach officer','Software Associate','Finance Associate','Innovation Associate','Support Staff'];
+  const order = DESIGNATIONS;
   employees.sort((a,b) => { const ai=order.indexOf(a.Designation); const bi=order.indexOf(b.Designation); return (ai<0?99:ai)-(bi<0?99:bi); });
 
   const recs   = DB.getAll('attendance').filter(a => a.Date === date);

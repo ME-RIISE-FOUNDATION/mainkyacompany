@@ -1,10 +1,64 @@
 [
   {
     "Employee_ID": "EMP_001",
-    "Name": "Administrator",
+    "Name": "Rahamath Kanchagar",
     "Designation": "CEO",
-    "Email": "admin@example.com",
-    "Phone": "",
+    "Email": "manikyamoneyservices@gmail.com",
+    "Phone": "+91 90600 49999",
+    "Photo_URL": "",
+    "Status": "Active"
+  },
+  {
+    "Employee_ID": "EMP_002",
+    "Name": "Dixith",
+    "Designation": "Operation and Business Head",
+    "Email": "deekshithu91@gmail.com",
+    "Phone": "+91 95133 13395",
+    "Photo_URL": "",
+    "Status": "Active"
+  },
+  {
+    "Employee_ID": "EMP_003",
+    "Name": "Deekshith Chandra",
+    "Designation": "Software Developer",
+    "Email": "deekshithchandra843@gmail.com",
+    "Phone": "+91 87921 87894",
+    "Photo_URL": "",
+    "Status": "Active"
+  },
+  {
+    "Employee_ID": "EMP_004",
+    "Name": "Arbaz N Badiger",
+    "Designation": "Visual Editor & Cameraman",
+    "Email": "mohammedarbazbadiger@gmail.com",
+    "Phone": "+91 81471 97008",
+    "Photo_URL": "",
+    "Status": "Active"
+  },
+  {
+    "Employee_ID": "EMP_005",
+    "Name": "Mahadev Kedari Kawane",
+    "Designation": "Software Engineer",
+    "Email": "kawanemahadev@gmail.com",
+    "Phone": "+91 94498 91247",
+    "Photo_URL": "",
+    "Status": "Active"
+  },
+  {
+    "Employee_ID": "EMP_006",
+    "Name": "Jnyan P",
+    "Designation": "Full Stack Developer",
+    "Email": "jnyanp52@gmail.com",
+    "Phone": "+91 93800 88946",
+    "Photo_URL": "",
+    "Status": "Active"
+  },
+  {
+    "Employee_ID": "EMP_007",
+    "Name": "Chandulal D K",
+    "Designation": "News Junction Operator",
+    "Email": "Cgowda109@gmail.com",
+    "Phone": "+91 96867 61361",
     "Photo_URL": "",
     "Status": "Active"
   }
