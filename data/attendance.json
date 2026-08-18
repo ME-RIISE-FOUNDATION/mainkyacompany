@@ -14,5 +14,13 @@
         "Login_Time": "2026-08-18 12:10:40",
         "Check_In": "",
         "Check_Out": ""
+    },
+    {
+        "Attendance_ID": "ATT_20260818_E5FZ7O",
+        "Employee_ID": "EMP_003",
+        "Date": "2026-08-18",
+        "Login_Time": "2026-08-18 17:11:40",
+        "Check_In": "2026-08-18 17:12:50",
+        "Check_Out": "2026-08-18 17:16:02"
     }
 ]

@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "Notif_ID": "NOTIF_20260818_FE3AK4",
+        "User_ID": "EMP_003",
+        "Message": "New task assigned: Testing",
+        "Type": "task_assigned",
+        "Read_Status": "unread",
+        "Created_At": "2026-08-18 11:40:52"
+    },
+    {
+        "Notif_ID": "NOTIF_20260818_VJM8J1",
+        "User_ID": "EMP_003",
+        "Message": "Your task has been Approved: Testing",
+        "Type": "approval_result",
+        "Read_Status": "unread",
+        "Created_At": "2026-08-18 17:15:53"
+    }
+]
