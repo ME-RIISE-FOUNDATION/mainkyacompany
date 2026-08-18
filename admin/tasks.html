@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Task Management — ME-RIISE FOUNDATION</title>
+<title>Task Management — Task Scheduler</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -373,7 +373,7 @@ function exportTasksGrouped(format) {
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Tasks');
-    XLSX.writeFile(wb, 'ME-RIISE_FOUNDATION_Tasks_' + Utils.today() + '.xlsx');
+    XLSX.writeFile(wb, COMPANY_SLUG() + '_Tasks_' + Utils.today() + '.xlsx');
   } else {
     if (typeof jspdf === 'undefined') { alert('PDF library not loaded'); return; }
     const { jsPDF } = jspdf;
@@ -393,7 +393,7 @@ function exportTasksGrouped(format) {
       });
       y = doc.lastAutoTable.finalY + 9;
     });
-    doc.save('ME-RIISE_FOUNDATION_Tasks_' + Utils.today() + '.pdf');
+    doc.save(COMPANY_SLUG() + '_Tasks_' + Utils.today() + '.pdf');
   }
 }
 </script>

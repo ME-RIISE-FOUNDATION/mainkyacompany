@@ -1,74 +1,11 @@
 [
   {
     "User_ID": "USR_001",
-    "Username": "geetha",
-    "Password_Hash": "$2y$10$Zrip7vLNHmPR0bO/JSxJz.AtBqrmlnn7z3yldA7RYhRanceTpd3G2",
+    "Username": "admin",
+    "Password_Hash": "$2y$10$FV3E0wlWaBeG6EuxjgiWgeLqXdg0zpkXvNCQWrMXfFd3SeQ3X6QZ6",
     "Designation": "CEO",
     "Employee_ID": "EMP_001",
-    "Email": "ceomeriise@mcehassan.ac.in",
-    "Name": "Dr. Geetha Kiran A"
-  },
-  {
-    "User_ID": "USR_002",
-    "Username": "mohana",
-    "Password_Hash": "$2y$10$763zB6qQMxcfrZOKilWcRu6ov4kgzLNDu73Ytnm/SCVmmS/SBt4NK",
-    "Designation": "COO",
-    "Employee_ID": "EMP_002",
-    "Email": "coomeriise@mcehassan.ac.in",
-    "Name": "Dr. Mohana Lakshmi J"
-  },
-  {
-    "User_ID": "USR_008",
-    "Username": "stapley",
-    "Password_Hash": "$2b$10$IucNQkKUQoZlV7y83yOyxeX.4W1XEUJfPq6BISiTn.ebH.I0qfWwS",
-    "Designation": "TBI Manager",
-    "Employee_ID": "EMP_008",
-    "Email": "imtbimeriise@mcehassan.ac.in",
-    "Name": "Mr. Stapley V S"
-  },
-  {
-    "User_ID": "USR_003",
-    "Username": "darsha",
-    "Password_Hash": "$2y$10$sBRUN.5NJSiXxDnl6I631.o9djzVUPQSdLMsO7pvQkybktMJ3l21.",
-    "Designation": "Software Associate",
-    "Employee_ID": "EMP_003",
-    "Email": "satbimeriise@mcehassan.ac.in",
-    "Name": "Mr. Darshan H D"
-  },
-  {
-    "User_ID": "USR_004",
-    "Username": "ramya",
-    "Password_Hash": "$2y$10$Y40J/AwA/EWe.dIUz2oDEutVxsCwTaNeFwq4tgsRKtRVr3kH60f16",
-    "Designation": "Finance Associate",
-    "Employee_ID": "EMP_004",
-    "Email": "fatbimeriise@mcehassan.ac.in",
-    "Name": "Miss. Ramya K V"
-  },
-  {
-    "User_ID": "USR_005",
-    "Username": "madhurya",
-    "Password_Hash": "$2y$10$RnywcxkdknLp5tOdjeOR4.yLn50iX2RF2VhS117yFYoMoU8/NYNoy",
-    "Designation": "Innovation Associate",
-    "Employee_ID": "EMP_005",
-    "Email": "iatbimeriise@mcehassan.ac.in",
-    "Name": "Ms. Madhurya H V"
-  },
-  {
-    "User_ID": "USR_006",
-    "Username": "deeksha",
-    "Password_Hash": "$2y$10$g2BE2VZCRtlNdJfxxEgKXexSmDpG4XGRyeI8qVTtI99Lna0YfJgVq",
-    "Designation": "Support Staff",
-    "Employee_ID": "EMP_006",
-    "Email": "sstbimeriise@mcehassan.ac.in",
-    "Name": "Ms. Deeksha M S"
-  },
-  {
-    "User_ID": "USR_007",
-    "Username": "megha",
-    "Designation": "Programme Associate/Outreach officer",
-    "Employee_ID": "EMP_007",
-    "Email": "patbimeriise@mcehassan.ac.in",
-    "Name": "Ms. Megha H M",
-    "Password_Hash": "$2b$10$4N/40wHVr.rUUiuK3qESJeOBToLFwMoWUUorM7F4SaO/nxPXTJWlu"
+    "Email": "admin@example.com",
+    "Name": "Administrator"
   }
 ]

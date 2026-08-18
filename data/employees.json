@@ -1,80 +1,11 @@
 [
   {
     "Employee_ID": "EMP_001",
-    "Name": "Dr. Geetha Kiran A",
+    "Name": "Administrator",
     "Designation": "CEO",
-    "Email": "ceomeriise@mcehassan.ac.in",
-    "Phone": "+91 98765 43210",
+    "Email": "admin@example.com",
+    "Phone": "",
     "Photo_URL": "",
     "Status": "Active"
-  },
-  {
-    "Employee_ID": "EMP_002",
-    "Name": "Dr. Mohana Lakshmi J",
-    "Designation": "COO",
-    "Email": "coomeriise@mcehassan.ac.in",
-    "Phone": "+91 9740596743",
-    "Photo_URL": "",
-    "Status": "Active"
-  },
-  {
-    "Employee_ID": "EMP_003",
-    "Name": "Mr. Darshan H D",
-    "Designation": "Software Associate",
-    "Email": "satbimeriise@mcehassan.ac.in",
-    "Phone": "+91 9945747345",
-    "Photo_URL": "Darshan",
-    "Status": "Active",
-    "Joining_Date": "2026-05-02"
-  },
-  {
-    "Employee_ID": "EMP_004",
-    "Name": "Miss. Ramya K V",
-    "Designation": "Finance Associate",
-    "Email": "fatbimeriise@mcehassan.ac.in",
-    "Phone": "+91 8495976021",
-    "Photo_URL": "",
-    "Status": "Active",
-    "Joining_Date": "2026-04-27"
-  },
-  {
-    "Employee_ID": "EMP_005",
-    "Name": "Ms. Madhurya H V",
-    "Designation": "Innovation Associate",
-    "Email": "iatbimeriise@mcehassan.ac.in",
-    "Phone": "+91 9980008830",
-    "Photo_URL": "",
-    "Status": "Active",
-    "Joining_Date": "2026-04-21"
-  },
-  {
-    "Employee_ID": "EMP_006",
-    "Name": "Ms. Deeksha M S",
-    "Designation": "Support Staff",
-    "Email": "sstbimeriise@mcehassan.ac.in",
-    "Phone": "+91 80886 75644",
-    "Photo_URL": "",
-    "Status": "Active",
-    "Joining_Date": "2026-04-21"
-  },
-  {
-    "Employee_ID": "EMP_007",
-    "Name": "Ms. Megha H M",
-    "Designation": "Programme Associate/Outreach officer",
-    "Email": "patbimeriise@mcehassan.ac.in",
-    "Phone": "+91 7795636004",
-    "Photo_URL": "",
-    "Status": "Active",
-    "Joining_Date": "2026-07-10"
-  },
-  {
-    "Employee_ID": "EMP_008",
-    "Name": "Mr. Stapley V S",
-    "Designation": "TBI Manager",
-    "Email": "imtbimeriise@mcehassan.ac.in",
-    "Phone": "+91 9844293678",
-    "Photo_URL": "",
-    "Status": "Active",
-    "Joining_Date": "2026-07-14"
   }
 ]

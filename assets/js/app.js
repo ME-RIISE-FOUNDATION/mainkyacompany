@@ -32,8 +32,8 @@ function hideBootLoader() {
 if (document.getElementById('pageContent')) showBootLoader();
 
 // ── Config ────────────────────────────────────────────────────
-// Only the CEO has admin access. The COO (Mohana) is a task recipient like any
-// other staff member — she receives tasks but does not get the admin panel.
+// Only the CEO role has admin access. Every other role (COO included) is a task
+// recipient like any staff member — they receive tasks but not the admin panel.
 const ADMIN_ROLES   = ['CEO'];
 const TASK_STATUSES = ['Pending', 'In Progress', 'Completed', 'Approved', 'Rejected'];
 const PRIORITIES    = ['High', 'Medium', 'Low'];
@@ -44,6 +44,14 @@ const DESIGNATIONS  = ['CEO', 'COO', 'TBI Manager', 'Programme Associate/Outreac
 // truth. Opened from file:// => fall back to a pure-localStorage dev mode.
 const SERVER_MODE = location.protocol === 'http:' || location.protocol === 'https:';
 const ENTITIES    = ['employees', 'users', 'tasks', 'approvals', 'notifications', 'attendance'];
+
+// ── White-label branding ──────────────────────────────────────
+// Set these two values per client. Everything else — page titles, sidebar,
+// login screen, PDF/Excel report headers and export filenames — derives from
+// them, so branding this app for a new company is a one-line change here.
+const COMPANY_NAME    = 'Task Scheduler';   // e.g. 'Acme Pvt Ltd'
+const COMPANY_TAGLINE = '';                 // optional; shown on login + reports
+const COMPANY_SLUG    = () => COMPANY_NAME.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '');
 
 const API = {
   url() { return rootPath() + 'api/data_api.php'; },
@@ -271,53 +279,13 @@ function seedIfNeeded(force) {
   if (SERVER_MODE && !force) return;
   if (localStorage.getItem('tbi_initialized')) return;
 
-  DB._setLocal('employees', [
-    {"Employee_ID":"EMP_001","Name":"Dr. Geetha Kiran A",  "Designation":"CEO",                 "Email":"ceomeriise@mcehassan.ac.in","Phone":"+91 98765 43210","Photo_URL":"","Status":"Active"},
-    {"Employee_ID":"EMP_002","Name":"Dr. Mohana Lakshmi J","Designation":"COO",                 "Email":"coomeriise@mcehassan.ac.in","Phone":"+91 98765 43211","Photo_URL":"","Status":"Active"},
-    {"Employee_ID":"EMP_008","Name":"Mr. Stapley V S",     "Designation":"TBI Manager",         "Email":"imtbimeriise@mcehassan.ac.in","Phone":"+91 9844293678","Photo_URL":"","Status":"Active"},
-    {"Employee_ID":"EMP_007","Name":"Ms. Megha H M",       "Designation":"Programme Associate/Outreach officer","Email":"patbimeriise@mcehassan.ac.in","Phone":"","Photo_URL":"","Status":"Active"},
-    {"Employee_ID":"EMP_003","Name":"Mr. Darshan H D",     "Designation":"Software Associate",  "Email":"satbimeriise@mcehassan.ac.in", "Phone":"+91 98765 43212","Photo_URL":"","Status":"Active"},
-    {"Employee_ID":"EMP_004","Name":"Miss. Ramya K V",     "Designation":"Finance Associate",   "Email":"fatbimeriise@mcehassan.ac.in", "Phone":"+91 98765 43213","Photo_URL":"","Status":"Active"},
-    {"Employee_ID":"EMP_005","Name":"Ms. Madhurya H V",    "Designation":"Innovation Associate","Email":"iatbimeriise@mcehassan.ac.in", "Phone":"+91 98765 43214","Photo_URL":"","Status":"Active"},
-    {"Employee_ID":"EMP_006","Name":"Ms. Deeksha M S",     "Designation":"Support Staff",    "Email":"sstbimeriise@mcehassan.ac.in", "Phone":"+91 98765 43215","Photo_URL":"","Status":"Active"}
-  ]);
-
-  // DEV/OFFLINE SEED ONLY (file:// fallback). Real auth runs server-side against
-  // bcrypt hashes in data/users.json — never put real passwords here. The
-  // placeholder below only lets the app open when there is no backend.
-  DB._setLocal('users', [
-    {"User_ID":"USR_001","Username":"geetha",  "Password":"changeme123","Designation":"CEO",                 "Employee_ID":"EMP_001","Email":"ceomeriise@mcehassan.ac.in","Name":"Dr. Geetha Kiran A"},
-    {"User_ID":"USR_002","Username":"mohana",  "Password":"changeme123","Designation":"COO",                 "Employee_ID":"EMP_002","Email":"coomeriise@mcehassan.ac.in","Name":"Dr. Mohana Lakshmi J"},
-    {"User_ID":"USR_008","Username":"stapley", "Password":"changeme123","Designation":"TBI Manager",         "Employee_ID":"EMP_008","Email":"imtbimeriise@mcehassan.ac.in","Name":"Mr. Stapley V S"},
-    {"User_ID":"USR_007","Username":"megha",   "Password":"changeme123","Designation":"Programme Associate/Outreach officer","Employee_ID":"EMP_007","Email":"patbimeriise@mcehassan.ac.in","Name":"Ms. Megha H M"},
-    {"User_ID":"USR_003","Username":"darsha",  "Password":"changeme123","Designation":"Software Associate",  "Employee_ID":"EMP_003","Email":"satbimeriise@mcehassan.ac.in","Name":"Mr. Darshan H D"},
-    {"User_ID":"USR_004","Username":"ramya",   "Password":"changeme123","Designation":"Finance Associate",   "Employee_ID":"EMP_004","Email":"fatbimeriise@mcehassan.ac.in","Name":"Miss. Ramya K V"},
-    {"User_ID":"USR_005","Username":"madhurya","Password":"changeme123","Designation":"Innovation Associate","Employee_ID":"EMP_005","Email":"iatbimeriise@mcehassan.ac.in","Name":"Ms. Madhurya H V"},
-    {"User_ID":"USR_006","Username":"deeksha", "Password":"changeme123","Designation":"Support Staff",    "Employee_ID":"EMP_006","Email":"sstbimeriise@mcehassan.ac.in","Name":"Ms. Deeksha M S"}
-  ]);
-
-  DB._setLocal('tasks', [
-    {"Task_ID":"TSK_20260604_367924","Employee_ID":"EMP_003","Task_Title":"Registration Form","Description":"Design a Professional Events Registration form for all programs ( NAIN 2.0, TBI-MCE, MRF, UBA ,RGEP , IIC )","Priority":"High","Assigned_Date":"2026-05-21","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_850917","Employee_ID":"EMP_003","Task_Title":"Certificate Generate - Achal to give access to certify files. Schedule meeting with Achal + CEO","Description":"Achal to give a access to certify files. Schedule meeting with Achal + CEO to plan and complete updates","Priority":"High","Assigned_Date":"2026-05-21","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_353294","Employee_ID":"EMP_003","Task_Title":"Prepare a Task Scheduler with admin access to ceomeriise@mcehassan.ac.in","Description":"It must go live from June 1. It can be a separate web page. Later we can integrate with meriise.org","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_640267","Employee_ID":"EMP_003","Task_Title":"Get a tab meriise.org exclusive for courses","Description":"1. Fundamentals of MATLAB - Under Microengineering. 2. Web Designing, Power BI & Elevate from concept to create through Innovation DTP - Under MSME. 3. Excel Essentials - General. 4.DSA - Under MicroEngineering","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_149014","Employee_ID":"EMP_004","Task_Title":"Complete the verification and updation of ME-RIISE FOUNDATION Event file","Description":"","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_850189","Employee_ID":"EMP_004","Task_Title":"Talk to Mona and prepare a Budget for office supplies under TBI","Description":"A list is prepared by Deeksha, get it from her","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_829081","Employee_ID":"EMP_004","Task_Title":"Take the bill file of NAIN 2.0 and update the UC annextures","Description":"Also front page of UC is to be done. Take guidance from Mona and complete it.","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_392279","Employee_ID":"EMP_005","Task_Title":"Updating website with event details (regular). End-to-end documentation for all events.","Description":"Update Ignite Idea to Proto 4.0","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_942678","Employee_ID":"EMP_005","Task_Title":"Show scanned folder of all events (Apr 2025–Apr 2026) and update TBI file","Description":"Show scanned folder of all events for ME-RIISE, NAIN 2.0, RGEP. TBI file: Update complete recruitment details.","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_786349","Employee_ID":"EMP_005","Task_Title":"Prepare event report of Innovation Catalyst.","Description":"","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_785897","Employee_ID":"EMP_005","Task_Title":"Update the 2nd session of DSA course documents. Ignite Idea to Proto 4.0.","Description":"","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_330988","Employee_ID":"EMP_005","Task_Title":"Prepare report and filing of documents as per checklist by 3:00 pm.","Description":"Get filing done by Deeksha. Needs to be completed and reviewed by Mona by 11 am.","Priority":"High","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_049742","Employee_ID":"EMP_006","Task_Title":"Keep log book outside immediately after coming.","Description":"Daily Task","Priority":"Medium","Assigned_Date":"2026-06-04","Deadline":"2026-06-30","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_754978","Employee_ID":"EMP_006","Task_Title":"Keep movement register immediately after coming.","Description":"Daily Tasks","Priority":"Medium","Assigned_Date":"2026-06-04","Deadline":"2026-06-30","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_692604","Employee_ID":"EMP_006","Task_Title":"Scan official documents/letters; update in Drive and mail.","Description":"Daily Tasks","Priority":"Medium","Assigned_Date":"2026-06-04","Deadline":"2026-06-30","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_211322","Employee_ID":"EMP_006","Task_Title":"Write from-and-to register for all documents and letters.","Description":"Daily Tasks","Priority":"Medium","Assigned_Date":"2026-06-04","Deadline":"2026-06-30","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_452394","Employee_ID":"EMP_006","Task_Title":"Check for charge in all laptops.","Description":"Daily Tasks","Priority":"Medium","Assigned_Date":"2026-06-04","Deadline":"2026-06-30","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_677348","Employee_ID":"EMP_006","Task_Title":"Complete scanning and updation of events.","Description":"Complete scanning and updation of events. Ensure all prepared documents are uploaded to Drive.","Priority":"Medium","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""},
-    {"Task_ID":"TSK_20260604_018465","Employee_ID":"EMP_006","Task_Title":"DSA – Microengineering file to be prepared.","Description":"Add flyer, registration details, curriculum, week 1 details. Take details from Darshan. Get reviewed by Mona.","Priority":"Medium","Assigned_Date":"2026-06-04","Deadline":"2026-06-04","Status":"Pending","Days_Pending":0,"Assigned_By":"Dr. Geetha Kiran A","File_URL":"","Notes":""}
-  ]);
-
+  // White-label template: seed data intentionally left empty. Real employees /
+  // users are provisioned per client in data/*.json (server mode) or created
+  // through the admin UI. This offline fallback only lets the app open when
+  // there is no backend — leave empty or add dev rows as needed.
+  DB._setLocal('employees', []);
+  DB._setLocal('users', []);
+  DB._setLocal('tasks', []);
   DB._setLocal('approvals', []);
   DB._setLocal('notifications', []);
   DB._setLocal('attendance', []);
@@ -536,8 +504,8 @@ const Utils = {
   },
 };
 
-// Dr. Geetha Kiran A (CEO) is the head of the organisation and the admin —
-// she is not listed alongside staff in employee views, rankings or analytics.
+// The CEO is the head of the organisation and the admin — not listed alongside
+// staff in employee views, rankings or analytics.
 function staffOnly(employees) {
   return (employees || []).filter(e => e.Designation !== 'CEO');
 }
@@ -622,8 +590,8 @@ function renderShell(title, requireAdmin = false) {
   document.getElementById('sidebarContainer').innerHTML = `
     <aside class="tbi-sidebar" id="sidebar">
       <a class="sidebar-brand" href="${root}${isAdm?'admin':'employee'}/dashboard.html">
-        <img src="${root}assets/images/logo.svg" alt="ME-RIISE FOUNDATION" onerror="this.style.display='none'">
-        <div><div class="sb-title">ME-RIISE FOUNDATION</div><div class="sb-sub">ME-RIISE FOUNDATION Tasks</div></div>
+        <img src="${root}assets/images/logo.svg" alt="${Utils.esc(COMPANY_NAME)}" onerror="this.style.display='none'">
+        <div><div class="sb-title">${Utils.esc(COMPANY_NAME)}</div><div class="sb-sub">${Utils.esc(COMPANY_TAGLINE || COMPANY_NAME + ' Tasks')}</div></div>
       </a>
       <nav class="sidebar-nav">${nav}</nav>
       <div class="sidebar-user">
@@ -903,8 +871,8 @@ function exportTablePDF(tableId, title) {
 }
 
 // ── Shared PDF/Excel branding header ──────────────────────────
-const ORG_TITLE    = 'ME-RIISE FOUNDATION';
-const ORG_SUBTITLE = '(A Section 8 Company)  ·  Elevating Ideas, Incubating Success';
+const ORG_TITLE    = COMPANY_NAME;
+const ORG_SUBTITLE = COMPANY_TAGLINE;
 
 // Draws the branded heading on a jsPDF doc and returns the Y to start the table at
 function pdfHeader(doc, title) {
@@ -967,3 +935,20 @@ function setTheme(theme) {
 
 // ── URL params helper ─────────────────────────────────────────
 function getParams() { return new URLSearchParams(window.location.search); }
+
+// ── Runtime branding ──────────────────────────────────────────
+// Applies COMPANY_NAME everywhere the markup is static: the browser-tab title
+// (keeps each page's own prefix before the "—" and swaps the org after it) and
+// any element tagged .js-company-name / .js-company-tagline (login screen,
+// printable report header). One config constant, whole app rebranded.
+function applyBranding() {
+  const t = document.title || '';
+  const dash = t.indexOf('—');
+  document.title = dash >= 0 ? t.slice(0, dash).trim() + ' — ' + COMPANY_NAME : COMPANY_NAME;
+  document.querySelectorAll('.js-company-name').forEach(el => { el.textContent = COMPANY_NAME; });
+  document.querySelectorAll('.js-company-tagline').forEach(el => {
+    if (COMPANY_TAGLINE) el.textContent = COMPANY_TAGLINE; else el.style.display = 'none';
+  });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyBranding);
+else applyBranding();
